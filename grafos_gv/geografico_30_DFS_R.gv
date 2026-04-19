@@ -1,0 +1,9 @@
+graph G {
+    0;
+    5;
+    19;
+    22;
+    0 -- 5 [color="green", penwidth=2.0];
+    5 -- 19 [color="green", penwidth=2.0];
+    19 -- 22 [color="green", penwidth=2.0];
+}

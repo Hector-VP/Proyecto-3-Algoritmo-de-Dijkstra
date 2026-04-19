@@ -21,7 +21,7 @@ class Arista:
         self.destino = destino
         self.dirigido = dirigido
         
-        # Generamos un ID único para la arista para evitar duplicados en el grafo
+        # Genera un ID único para la arista para evitar duplicados en el grafo
         if dirigido:
             self.id = f"{origen.id}->{destino.id}"
         else:
@@ -57,13 +57,13 @@ class Grafo:
         nodo_origen = self.nodos[id_origen]
         nodo_destino = self.nodos[id_destino]
 
-        # Evita bucles (aristas de un nodo a sí mismo) si la lógica lo requiere.
+        # Evita bucles (aristas de un nodo a sí mismo).
         if id_origen == id_destino:
             return
 
         nueva_arista = Arista(nodo_origen, nodo_destino, self.dirigido)
 
-        # Inserta la arista solo si no existe ya
+        # Inserta la arista solo si está no existe
         if nueva_arista.id not in self.aristas:
             self.aristas[nueva_arista.id] = nueva_arista
             
@@ -71,12 +71,35 @@ class Grafo:
             nodo_origen.grado += 1
             if not self.dirigido:
                 nodo_destino.grado += 1
-
-    def guardar_graphviz(self, nombre_archivo):
+######################################################################
+    def guardar_graphviz(self, nombre_archivo, color_arista=None):
         """Exporta el grafo a un archivo con formato simple de GraphViz (.gv)"""
         tipo_grafo = "digraph" if self.dirigido else "graph"
         conector = "->" if self.dirigido else "--"
 
+        with open(nombre_archivo, 'w') as f:
+            f.write(f"{tipo_grafo} G {{\n")
+            
+            # Imprimir todos los nodos asegura que los nodos aislados aparezcan en Gephi
+            for nodo in self.nodos.values():
+                f.write(f"    {nodo.id};\n")
+                
+            for arista in self.aristas.values():
+                if color_arista:
+                    f.write(f"    {arista.origen.id} {conector} {arista.destino.id} [color=\"{color_arista}\", penwidth=2.0];\n")
+                else:
+                    f.write(f"    {arista.origen.id} {conector} {arista.destino.id};\n")
+            f.write("}\n")
+#######################################################################
+    def _construir_adyacencia(self):
+        """Método auxiliar para mapear vecinos en O(V+E) y acelerar las búsquedas."""
+        adyacencia = {id_nodo: [] for id_nodo in self.nodos}
+        for arista in self.aristas.values():
+            adyacencia[arista.origen.id].append(arista.destino.id)
+            if not self.dirigido:
+                adyacencia[arista.destino.id].append(arista.origen.id)
+        return adyacencia
+########################################################################
         with open(nombre_archivo, 'w') as f:
             f.write(f"{tipo_grafo} G {{\n")
             for arista in self.aristas.values():
