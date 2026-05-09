@@ -86,7 +86,7 @@ class Grafo:
                 
             for arista in self.aristas.values():
                 if color_arista:
-                    f.write(f"    {arista.origen.id} {conector} {arista.destino.id} [color=\"{color_arista}\", penwidth=2.0];\n")
+                    f.write(f"    {arista.origen.id} {conector} {arista.destino.id} [color=\"{color_arista}\"];\n")
                 else:
                     f.write(f"    {arista.origen.id} {conector} {arista.destino.id};\n")
             f.write("}\n")
@@ -100,8 +100,3 @@ class Grafo:
                 adyacencia[arista.destino.id].append(arista.origen.id)
         return adyacencia
 ########################################################################
-        with open(nombre_archivo, 'w') as f:
-            f.write(f"{tipo_grafo} G {{\n")
-            for arista in self.aristas.values():
-                f.write(f"    {arista.origen.id} {conector} {arista.destino.id};\n")
-            f.write("}\n")
