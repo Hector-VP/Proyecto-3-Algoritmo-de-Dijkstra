@@ -8,7 +8,14 @@ from grafoGilbert import grafoGilbert
 from grafoGeografico import grafoGeografico
 from grafoBarabasiAlbert import grafoBarabasiAlbert
 from grafoDorogovtsevMendes import grafoDorogovtsevMendes
-from grafoDijkstra import grafoDijkstra # Tu nueva pestaña exclusiva para Dijkstra
+
+# Algoritmos del Proyecto 02 - Rutas actualizadas
+from Proyecto_02 import grafoBFS
+from Proyecto_02 import grafoDFS_I
+from Proyecto_02 import grafoDFS_R
+
+# Algoritmos del Proyecto 03 - Rutas actualizadas
+from Proyecto_03.grafoDijkstra import grafoDijkstra
 
 # Aumentamos el límite de recursividad por seguridad
 sys.setrecursionlimit(2500)
